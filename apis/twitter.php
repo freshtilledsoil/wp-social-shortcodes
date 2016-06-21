@@ -11,16 +11,7 @@ class TwitterAPI extends BaseAPI {
   //***************************************************************************
   //
   //***************************************************************************
-  public function request($url, $method = 'GET', $params = array()) {
-    if( $params ) {
-      $url = $url . '?' . http_build_query($params, null, '&');
-    }
-
-    $this->setCacheName( 'tw_' . $params['screen_name'] . 'c' . $params['count'] );
-    $this->setCacheExpiration( 3600 ); // 1 hour
-
-    $this->setCurrentRequest($url);
-
+  public function request($url, $method = 'GET', $params=null) {
     $results = $this->getCacheContents();
     if( $results ) { return $results; }
 
@@ -32,8 +23,8 @@ class TwitterAPI extends BaseAPI {
     );
 
     $t = new TwitterAPIExchange($settings);
-    $results =  $t->setGetfield(sprintf('?screen_name=%s&count=%d&trim_user=true&exclude_replies=true&include_rts=1', $params['screen_name'], $params['count']))
-                 ->buildOauth('https://api.twitter.com/1.1/statuses/user_timeline.json', 'GET')
+    $results =  $t->setGetfield( $params )
+                 ->buildOauth( $this->getEndpoint() . $url, $method)
                  ->performRequest();
 
     if( $results === false ) {
@@ -48,10 +39,11 @@ class TwitterAPI extends BaseAPI {
     //
     //***************************************************************************
     public function getTweets($username, $count = 3) {
-      $results = $this->request('/statuses/user_timeline.json', 'GET', array(
-          'screen_name'   => $username,
-          'count'         => $count
-      ));
+
+      $this->setCacheName( 'tw_' . $username . 'c' . $count );
+      $this->setCacheExpiration( 3600 ); // 1 hour
+
+      $results = $this->request('/statuses/user_timeline.json', 'GET', sprintf('?screen_name=%s&count=%d&trim_user=true&exclude_replies=true&include_rts=true', $username, $count));
 
       if( $results && $json = json_decode($results) ) {
           $tweets = array();

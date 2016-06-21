@@ -4,10 +4,11 @@ class BaseAPI {
   private $_endpoint;
   private $_cache_name;
   private $_cache_expiration;
-  private $_current_request;
-  private $_current_request_hash;
 
-  function __construct( $endpoint ) { $this->_endpoint = $endpoint; }
+  function __construct( $endpoint ) {
+    $this->_endpoint    = $endpoint;
+    $this->_cache_name  = 'api_cache';
+  }
 
   public function getEndpoint() { return $this->_endpoint; }
 
@@ -41,49 +42,29 @@ class BaseAPI {
   //***************************************************************************
   //
   //***************************************************************************
-  public function getCurrentRequest() {return $this->_current_request;}
-
-  public function setCurrentRequest( $current_request ) {
-    $this->_current_request = $this->getEndpoint() . $current_request;
-    $this->_current_request_hash = $this->getURLHash( $this->_current_request );
-  }
-
-  //***************************************************************************
-  //
-  //***************************************************************************
-  public function getCurrentRequestHash() { return $this->_current_request_hash; }
-
-  public function getURLHash( $url ) {return md5( $url );}
-
-  //***************************************************************************
-  //
-  //***************************************************************************
   public function request($url, $method = 'GET', $params = array()) {
-    if( $params ) {
+    if( 'GET' == $method && $params ) {
       $url = $url . '?' . http_build_query($params, null, '&');
     }
-
-    $this->setCurrentRequest( $url );
 
     $results = $this->getCacheContents();
     if( $results ) { return $results; }
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $this->getCurrentRequest());
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL, $this->getEndpoint() . $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-    if( $method == 'GET' ) {
+    if( 'GET' == $method ) {
       curl_setopt($ch, CURLOPT_HEADER, 0);
     }
     else
-    if( $method == 'POST' ) {
+    if( 'POST' == $method ) {
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      //curl_setopt($ch, CURLOPT_POSTFIELDS, );
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     }
 
-    $results= curl_exec($ch);
-    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $results  = curl_exec($ch);
+    $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
     if( $results === false ) {
