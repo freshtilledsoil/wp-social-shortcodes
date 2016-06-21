@@ -16,7 +16,7 @@ class TwitterAPI extends BaseAPI {
       $url = $url . '?' . http_build_query($params, null, '&');
     }
 
-    $this->setCacheName( 'twt_' . $params['screen_name'] );
+    $this->setCacheName( 'tw_' . $params['screen_name'] . 'c' . $params['count'] );
     $this->setCacheExpiration( 3600 ); // 1 hour
 
     $this->setCurrentRequest($url);
@@ -32,7 +32,7 @@ class TwitterAPI extends BaseAPI {
     );
 
     $t = new TwitterAPIExchange($settings);
-    $results =  $t->setGetfield(sprintf('?screen_name=%s&count=%d&trim_user=true&exclude_replies=true&include_rts=false', $params['screen_name'], $params['count']))
+    $results =  $t->setGetfield(sprintf('?screen_name=%s&count=%d&trim_user=true&exclude_replies=true&include_rts=1', $params['screen_name'], $params['count']))
                  ->buildOauth('https://api.twitter.com/1.1/statuses/user_timeline.json', 'GET')
                  ->performRequest();
 
