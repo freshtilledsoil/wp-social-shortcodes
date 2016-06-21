@@ -1,0 +1,90 @@
+.social-code {
+  font-size: .8em;
+}
+
+.social-code--heading {
+  /* just a hook incase you want to use your default h2 styling */
+}
+
+.social-code--subheading {
+  color: #777;
+  padding-bottom: 0;
+  margin-top: -5px;
+  margin-bottom: 20px;
+}
+
+.social-code--list,
+.social-code--meta {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social-code--item {
+ 
+}
+
+.social-code--item + .social-code--item {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ccc;
+}
+
+.social-code--meta {
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+
+.social-code--item__label {
+  position: absolute;
+  left: -999em;
+  top: -999em;
+}
+
+.social-code--subitem {
+  display: inline-block;
+  opacity: .3;
+  transition: opacity .3s linear;
+}
+
+.social-code--subitem:hover {
+  opacity: 1;
+}
+
+.social-code--subitem:hover .social-code--item__anchor {
+  color: #000;
+}
+
+.social-code--subitem + .social-code--subitem {
+  margin-left: 30px;
+  font-size: .8em;
+}
+
+.social-code--item__anchor {
+  display: block;
+  text-decoration: none;
+  color: #000;
+}
+
+/* Icons */
+
+.social-code--icon {
+  position: relative;
+  top: 1px;
+}
+
+.social-code--icon__retweet {
+  height: 16px;
+  width: 26px;
+  top: 2px;
+}
+
+.social-code--icon__heart {
+  height: 14px;
+  width: 16px;
+}
+
+.social-code--icon__reply {
+  height: 14px;
+  width: 15px;
+}
