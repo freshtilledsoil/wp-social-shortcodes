@@ -27,7 +27,7 @@ class FTSSocialShortCodes {
 
           $output.= '<section class="' . $ns . ' ' . $ns . '-twitter">';
 
-          if ( count( $tweets ) > 1 ) {
+          if ( count( $tweets ) >= 1 ) {
 
             if( $title ) {
                 $output.= '<h2 class="' . $ns . '--heading">' . $title . '</h2>' . "\n";
