@@ -21,7 +21,7 @@
 }
 
 .social-code--item {
- 
+
 }
 
 .social-code--item + .social-code--item {
@@ -87,4 +87,30 @@
 .social-code--icon__reply {
   height: 14px;
   width: 15px;
+}
+
+.social-code--msg {
+  background: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.social-code--msg p {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  color: #a94442;
+}
+
+.social-code--msg a {
+  color: #843534;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.social-code--msg a:hover,
+.social-code--msg a:focus {
+  color: #843534;
+  text-decoration: underline;
 }

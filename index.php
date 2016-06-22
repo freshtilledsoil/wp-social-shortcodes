@@ -27,37 +27,48 @@ class FTSSocialShortCodes {
 
           $output.= '<section class="' . $ns . ' ' . $ns . '-twitter">';
 
-          if( $title ) {
-              $output.= '<h2 class="' . $ns . '--heading">' . $title . '</h2>' . "\n";
-              $output.= '<p class="' . $ns . '--subheading">Via <a href="' . esc_url( 'https://twitter.com/' . $user ) . '"><em>@' . $user . '</em></a></p>' . "\n";
+          if ( count( $tweets ) > 1 ) {
+
+            if( $title ) {
+                $output.= '<h2 class="' . $ns . '--heading">' . $title . '</h2>' . "\n";
+                $output.= '<p class="' . $ns . '--subheading">Via <a href="' . esc_url( 'https://twitter.com/' . $user ) . '"><em>@' . $user . '</em></a></p>' . "\n";
+            }
+
+            $output.= '<ul class="' . $ns . '--list">' . "\n";
+            foreach( $tweets as $tweet ) {
+
+                $output .= '<li class="' . $ns . '--item">' . "\n";
+                $output .= $tweet['text'] . "\n";
+                $output .= '<ul class="' . $ns . '--meta">' . "\n";
+
+                $output .= '<li class="' . $ns . '--subitem"><a href="https://twitter.com/intent/tweet?in_reply_to='.$tweet['id'].'" class="social-code--item__anchor" target="_blank">' . "\n";
+                  $output .= '<img src="' . esc_url( FTSSocialShortCodes::getPluginURL() . 'assets/icons/mail-reply.svg' ) .'" alt="Reply" class="' . $ns . '--icon ' . $ns . '--icon__reply">' . "\n";
+                  $output .= '<span class="' . $ns . '--item__label">Reply to this Tweet</span>' . "\n";
+                $output .= '</a></li>' . "\n";
+
+                $output .= '<li class="' . $ns . '--subitem"><a href="https://twitter.com/intent/retweet?tweet_id='.$tweet['id'].'" class="social-code--item__anchor" target="_blank">' . "\n";
+                  $output .= '<img src="' . esc_url( FTSSocialShortCodes::getPluginURL() . 'assets/icons/retweet.svg' ) . '" alt="Retweet" class="' . $ns . '--icon ' . $ns . '--icon__retweet">' . "\n";
+                  $output .= '<span class="' . $ns . '--item__label">Retweet count: </span>' . $tweet['retweet_count'] .  "\n";
+                $output .= '</a></li>' . "\n";
+
+                $output .= '<li class="' . $ns . '--subitem"><a href="https://twitter.com/intent/like?tweet_id='.$tweet['id'].'" class="social-code--item__anchor" target="_blank">' . "\n";
+                  $output .= '<img src="' . esc_url( FTSSocialShortCodes::getPluginURL() . 'assets/icons/heart.svg' ) .'" alt="Like" class="' . $ns . '--icon ' . $ns . '--icon__heart">' . "\n";
+                  $output .= '<span class="' . $ns . '--item__label">Favorite count: </span>' . $tweet['favorite_count'] . "\n";
+                $output .= '</a></li>' . "\n";
+
+                $output .= '</li>' . "\n";
+                $output .= '</ul>' . "\n";
+
+            } // foreach
+
+            $output.= '</ul>' . "\n";
+
+          } else {
+
+              $output .= '<div class="' . $ns . '--msg"><p>My most sincere apologies, but there are no tweets to display. Please make sure the <a href="' . get_admin_url() . 'options-general.php?page=social_shortcodes">plugin settings</a> are filled out correctly.</p></div>' . "\n";
+
           }
 
-          $output.= '<ul class="' . $ns . '--list">' . "\n";
-          foreach( $tweets as $tweet ) {
-
-            $output .= '<li class="' . $ns . '--item">' . "\n";
-            $output .= $tweet['text'] . "\n";
-            $output .= '<ul class="' . $ns . '--meta">' . "\n";
-
-            $output .= '<li class="' . $ns . '--subitem"><a href="https://twitter.com/intent/tweet?in_reply_to='.$tweet['id'].'" class="social-code--item__anchor" target="_blank">' . "\n";
-              $output .= '<img src="' . esc_url( FTSSocialShortCodes::getPluginURL() . 'assets/icons/mail-reply.svg' ) .'" alt="Reply" class="' . $ns . '--icon ' . $ns . '--icon__reply">' . "\n";
-              $output .= '<span class="' . $ns . '--item__label">Reply to this Tweet</span>' . "\n";
-            $output .= '</a></li>' . "\n";
-
-            $output .= '<li class="' . $ns . '--subitem"><a href="https://twitter.com/intent/retweet?tweet_id='.$tweet['id'].'" class="social-code--item__anchor" target="_blank">' . "\n";
-              $output .= '<img src="' . esc_url( FTSSocialShortCodes::getPluginURL() . 'assets/icons/retweet.svg' ) . '" alt="Retweet" class="' . $ns . '--icon ' . $ns . '--icon__retweet">' . "\n";
-              $output .= '<span class="' . $ns . '--item__label">Retweet count: </span>' . $tweet['retweet_count'] .  "\n";
-            $output .= '</a></li>' . "\n";
-
-            $output .= '<li class="' . $ns . '--subitem"><a href="https://twitter.com/intent/like?tweet_id='.$tweet['id'].'" class="social-code--item__anchor" target="_blank">' . "\n";
-              $output .= '<img src="' . esc_url( FTSSocialShortCodes::getPluginURL() . 'assets/icons/heart.svg' ) .'" alt="Like" class="' . $ns . '--icon ' . $ns . '--icon__heart">' . "\n";
-              $output .= '<span class="' . $ns . '--item__label">Favorite count: </span>' . $tweet['favorite_count'] . "\n";
-            $output .= '</a></li>' . "\n";
-
-            $output .= '</li>' . "\n";
-            $output .= '</ul>' . "\n";
-          }
-          $output.= '</ul>' . "\n";
           $output.= '</section><!--/.' . $ns . '-->' . "\n";
       }
       return $output;

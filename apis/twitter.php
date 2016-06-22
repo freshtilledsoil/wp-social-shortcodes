@@ -22,9 +22,9 @@ class TwitterAPI extends BaseAPI {
         'consumer_secret'           => get_option('fts_ss_consumer_secret', ''),
     );
 
-    $t = new TwitterAPIExchange($settings);
+    $t = new TwitterAPIExchange( $settings );
     $results =  $t->setGetfield( $params )
-                 ->buildOauth( $this->getEndpoint() . $url, $method)
+                 ->buildOauth( $this->getEndpoint() . $url, $method )
                  ->performRequest();
 
     if( $results === false ) {
@@ -38,7 +38,7 @@ class TwitterAPI extends BaseAPI {
     //***************************************************************************
     //
     //***************************************************************************
-    public function getTweets($username, $count = 3) {
+    public function getTweets( $username, $count = 3 ) {
 
       $this->setCacheName( 'tw_' . $username . 'c' . $count );
       $this->setCacheExpiration( 3600 ); // 1 hour
